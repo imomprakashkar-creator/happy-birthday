@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday!</title>
+    <title>Happy Birthday Meri Pengu!</title>
     
-    <!-- Glowing Cursive and Clean Fonts (Matches the video style) -->
+    <!-- Beautiful Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
     
     <!-- Fireworks Library -->
@@ -15,7 +15,7 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #050301; /* Very dark background to make the glow pop */
+            background-color: #030201; /* Deep cinematic black */
             color: #fff;
             font-family: 'Quicksand', sans-serif;
             display: flex;
@@ -25,34 +25,98 @@
             min-height: 100vh;
             overflow: hidden;
             text-align: center;
-            cursor: pointer;
         }
 
-        .container {
+        /* --- INTRO SCREEN --- */
+        #intro-screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #030201;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 500;
+            transition: opacity 1s ease;
+        }
+
+        .tap-btn {
+            background: transparent;
+            border: 2px solid #fb8500;
+            color: #fb8500;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.5rem;
+            padding: 15px 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(251, 133, 0, 0.4);
+            transition: all 0.3s ease;
+            animation: pulse-btn 2s infinite;
+        }
+
+        .tap-btn:hover {
+            background: #fb8500;
+            color: #000;
+            box-shadow: 0 0 30px rgba(251, 133, 0, 0.8);
+        }
+
+        @keyframes pulse-btn {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* --- MAIN CONTENT (Hidden initially) --- */
+        #main-content {
+            display: none; /* Revealed by JS */
+            opacity: 0;
             z-index: 10;
             padding: 20px;
-            pointer-events: none; /* Let clicks pass through for fireworks */
-            animation: fadeIn 3s ease-in;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 2s forwards;
+        }
+
+        /* --- THE GLOWING TREE --- */
+        .tree-container {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px #fb8500);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .tree-container svg {
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: #ffb703;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         h1 {
             font-family: 'Dancing Script', cursive;
-            font-size: 3rem;
-            color: #ffb703; /* Autumn gold */
+            font-size: 2.5rem;
+            color: #ffb703;
             margin: 0;
-            text-shadow: 0 0 10px rgba(255, 183, 3, 0.5);
         }
 
         .name {
             font-family: 'Dancing Script', cursive;
-            font-size: 5.5rem;
-            color: #fb8500; /* Glowing autumn orange */
-            margin: 0 0 30px 0;
+            font-size: 5rem;
+            color: #fb8500;
+            margin: 5px 0 25px 0;
             text-shadow: 0 0 15px #fb8500, 0 0 30px #fb8500;
         }
 
         .message {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: #ffe8d6;
             line-height: 1.8;
             max-width: 650px;
@@ -60,8 +124,13 @@
             text-shadow: 0 0 5px rgba(0,0,0,0.8);
         }
 
-        /* Pure CSS Autumn Leaves Animation */
-        .leaf {
+        /* Hidden Music Player */
+        #music-container {
+            display: none;
+        }
+
+        /* Pure CSS Falling Elements */
+        .particle {
             position: absolute;
             top: -50px;
             opacity: 0.8;
@@ -75,67 +144,41 @@
         }
 
         @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(15px); }
-            100% { opacity: 1; transform: translateY(0); }
+            to { opacity: 1; }
         }
 
-        /* Corner Music Player */
-        .corner-player {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            z-index: 100;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 10px;
-            border-radius: 12px;
-            border: 1px solid #fb8500;
-            pointer-events: auto; /* Allow interacting with player */
-            transition: transform 0.3s ease;
-        }
-
-        .corner-player:hover {
-            transform: scale(1.05);
-        }
-
-        /* Instruction Text */
-        .instruction {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.5);
-            animation: blink 2s infinite;
-            pointer-events: none;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 0.2; }
-            50% { opacity: 0.8; }
-        }
-
-        /* Mobile Phone Adjustments */
         @media (max-width: 600px) {
-            h1 { font-size: 2.5rem; }
-            .name { font-size: 4rem; }
-            .message { font-size: 1.1rem; padding: 0 15px; }
-            .corner-player { 
-                bottom: 80px; 
-                right: 50%; 
-                transform: translateX(50%); 
-            }
+            .tree-container { width: 120px; height: 120px; }
+            h1 { font-size: 2rem; }
+            .name { font-size: 3.5rem; }
+            .message { font-size: 1.05rem; padding: 0 10px; }
         }
     </style>
 </head>
 <body>
-    
-    <!-- Leaves background container -->
-    <div id="leaves-container"></div>
 
-    <div class="container">
+    <!-- 1. INTRO SCREEN (Clickable Interface) -->
+    <div id="intro-screen">
+        <button class="tap-btn" onclick="startExperience()">Tap to Open ✨</button>
+    </div>
+
+    <!-- Falling particles background container -->
+    <div id="particles-container"></div>
+
+    <!-- 2. MAIN CONTENT (Tree + Text) -->
+    <div id="main-content">
+        
+        <!-- The Glowing Tree SVG -->
+        <div class="tree-container">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 2L9 7H11L7 14H10L5 22H19L14 14H17L13 7H15L12 2Z" fill="rgba(251, 133, 0, 0.2)" stroke="#fb8500"/>
+                <circle cx="12" cy="22" r="1" fill="#ffb703" stroke="none"/>
+            </svg>
+        </div>
+
         <h1>Happy Birthday</h1>
         
-        <div class="name">meri pengu</div>
+        <div class="name">Meri Pengu</div>
         
         <div class="message">
             You have meant the world for me. <br>
@@ -147,70 +190,58 @@
         </div>
     </div>
 
-    <!-- Click Instruction -->
-    <div class="instruction">✨ Tap anywhere for a surprise ✨</div>
-
-    <!-- Corner Player with requested Song ID (UGr-YGCy050) -->
-    <div class="corner-player">
-        <iframe width="220" height="60" 
-            src="https://www.youtube.com/embed/UGr-YGCy050?controls=1" 
-            title="YouTube music player" frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen>
-        </iframe>
-    </div>
+    <!-- Hidden Music Player (Injected via JS for Autoplay) -->
+    <div id="music-container"></div>
 
     <script>
-        // --- 1. FIREWORKS ON CLICK ---
-        document.body.addEventListener('click', function(e) {
-            // Prevent fireworks if clicking on the music player
-            if(e.target.closest('.corner-player')) return;
+        function startExperience() {
+            // 1. Hide the intro button smoothly
+            const intro = document.getElementById('intro-screen');
+            intro.style.opacity = '0';
+            setTimeout(() => { intro.style.display = 'none'; }, 1000);
 
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
+            // 2. Show the main content (Tree and Text)
+            const mainContent = document.getElementById('main-content');
+            mainContent.style.display = 'flex';
 
+            // 3. Inject YouTube Music (Background Autoplay bypass)
+            // UGr-YGCy050 will play automatically now that she clicked!
+            const musicBox = document.getElementById('music-container');
+            musicBox.innerHTML = `<iframe width="10" height="10" 
+                src="https://www.youtube.com/embed/UGr-YGCy050?autoplay=1&loop=1&playlist=UGr-YGCy050" 
+                frameborder="0" allow="autoplay" allowfullscreen></iframe>`;
+
+            // 4. Trigger Fireworks
             confetti({
-                particleCount: 100,
+                particleCount: 150,
                 spread: 100,
-                origin: { x: x, y: y },
-                // Autumn colored fireworks
+                origin: { y: 0.5 },
                 colors: ['#fb8500', '#ffb703', '#8e1600', '#ffffff'],
                 zIndex: 1000
             });
-        });
 
-        // Trigger an initial burst of fireworks automatically when the page loads
-        setTimeout(() => {
-            confetti({ 
-                particleCount: 150, 
-                spread: 120, 
-                origin: { y: 0.6 }, 
-                colors: ['#fb8500', '#ffb703', '#8e1600'] 
-            });
-        }, 1000);
-
-        // --- 2. FALLING AUTUMN LEAVES ---
-        const leavesContainer = document.getElementById('leaves-container');
-        const leafColors = ['#fb8500', '#ffb703', '#8e1600', '#cc5500'];
-        
-        for (let i = 0; i < 40; i++) {
-            let leaf = document.createElement('div');
-            leaf.classList.add('leaf');
+            // 5. Start Falling Autumn Particles
+            const particlesContainer = document.getElementById('particles-container');
+            const colors = ['#fb8500', '#ffb703', '#8e1600', '#cc5500'];
             
-            // Generate a natural leaf shape using CSS border-radius
-            leaf.style.width = (Math.random() * 12 + 8) + 'px';
-            leaf.style.height = (Math.random() * 12 + 12) + 'px';
-            leaf.style.backgroundColor = leafColors[Math.floor(Math.random() * leafColors.length)];
-            leaf.style.borderRadius = '0 50% 0 50%'; 
-            
-            // Randomize starting position and fall speed
-            leaf.style.left = Math.random() * 100 + 'vw';
-            leaf.style.animationDuration = (Math.random() * 4 + 6) + 's';
-            leaf.style.animationDelay = (Math.random() * 5) + 's';
-            
-            leavesContainer.appendChild(leaf);
+            for (let i = 0; i < 40; i++) {
+                let particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Shape it like leaves/petals
+                particle.style.width = (Math.random() * 10 + 8) + 'px';
+                particle.style.height = (Math.random() * 10 + 12) + 'px';
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.borderRadius = '0 50% 0 50%'; 
+                
+                // Random position and fall speed
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                particle.style.animationDelay = (Math.random() * 5) + 's';
+                
+                particlesContainer.appendChild(particle);
+            }
         }
     </script>
 </body>
-</html>
 </html>
