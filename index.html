@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0b0c10; /* Dark night sky background */
+            color: #66fcf1;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            text-align: center;
+        }
+        
+        .container {
+            z-index: 10;
+            animation: fadeIn 3s ease-in;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #45a29e;
+            margin-bottom: 10px;
+        }
+
+        .name {
+            color: #fff;
+            font-size: 4rem;
+            text-shadow: 0 0 15px #66fcf1;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .message {
+            font-size: 1.3rem;
+            margin-top: 30px;
+            color: #c5c6c7;
+            max-width: 600px;
+            line-height: 1.8;
+        }
+
+        /* Twinkling Stars Background */
+        .stars {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 1;
+        }
+
+        /* YouTube Music Player Container */
+        .music-player {
+            margin-top: 50px;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid #45a29e;
+            box-shadow: 0 0 10px rgba(102, 252, 241, 0.2);
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- This creates the starry background -->
+    <div class="stars" id="stars"></div>
+
+    <div class="container">
+        <h1>Happy Birthday,</h1>
+        
+        <!-- ========================================== -->
+        <!-- CUSTOMIZATION 1: THE NAME                  -->
+        <!-- ========================================== -->
+        <div class="name">Meri Pengu</div>
+        
+        <div class="message">
+            <!-- ========================================== -->
+            <!-- CUSTOMIZATION 2: YOUR PERSONAL MESSAGE     -->
+            <!--  Write whatever you want to say inside     -->
+            <!-- the <p> tags below!                        -->
+            <!-- ========================================== -->
+            <p>
+                You have meant the world for me. <br>
+                The way last year was didn't turn out to be best, <br>
+                but hope this year comes with strenght and lots of love, <br>
+                this october please pass slowy for my jaan!! <br>
+                Wishing you a day filled with love, laughter, and endless joy. <br>
+                You deserve all the happiness in the universe today! ❤️
+            </p>
+        </div>
+
+        <div class="music-player">
+            <p style="margin: 0 0 10px 0; color: #fff; font-size: 0.9rem;">🎵 Play our song</p>
+            
+            <!-- ========================================== -->
+            <!-- CUSTOMIZATION 3: YOUTUBE MUSIC EMBED       -->
+            <!-- Replace 'YOUR_VIDEO_ID' with the 11-letter -->
+            <!-- ID from your chosen YouTube video URL.     -->
+            <!-- Example: For https://youtube.com/watch?v=dQw4w9WgXcQ, 
+                 the ID is dQw4w9WgXcQ                      -->
+            <!-- ========================================== -->
+            <iframe width="250" height="60" 
+                src="https://www.youtube.com/embed/UGr-YGCy050" 
+                title="YouTube video player" frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+
+    <script>
+        // Javascript to generate random twinkling stars
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 150; i++) {
+            let star = document.createElement('div');
+            star.style.position = 'absolute';
+            star.style.width = Math.random() * 3 + 'px';
+            star.style.height = star.style.width;
+            star.style.backgroundColor = 'white';
+            star.style.borderRadius = '50%';
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.top = Math.random() * 100 + 'vh';
+            // Random opacity and twinkling effect setup
+            star.style.opacity = Math.random() * 0.8 + 0.2;
+            starsContainer.appendChild(star);
+        }
+    </script>
+</body>
+</html>
