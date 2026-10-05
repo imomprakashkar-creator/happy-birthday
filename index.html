@@ -1,247 +1,325 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday Meri Pengu!</title>
-    
-    <!-- Beautiful Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-    
-    <!-- Fireworks Library -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #030201; /* Deep cinematic black */
-            color: #fff;
-            font-family: 'Quicksand', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            overflow: hidden;
-            text-align: center;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Happy Birthday Meri Pengu 🍁</title>
+<style>
+  :root { --amber:#ffb347; --rust:#e2561b; --crimson:#a4161a; --cream:#fff1dc; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  
+  /* Applied Bold Times New Roman Globally */
+  html,body { height:100%; overflow:hidden; font-family:'Times New Roman', Times, serif; font-weight:bold; color:var(--cream);
+    background:linear-gradient(180deg,#14070a 0%,#3a1208 45%,#8a2f0e 80%,#d9731f 100%); }
+  
+  canvas#c { position:fixed; inset:0; width:100%; height:100%; cursor:pointer; }
+  
+  .title { position:fixed; top:max(4vh,env(safe-area-inset-top)); left:0; right:0; text-align:center; pointer-events:none; }
+  .title small { display:block; letter-spacing:.3em; font-size:clamp(12px,2.6vw,15px); opacity:.85; text-transform:uppercase; color:var(--amber); }
+  .title h1 { font-family:'Times New Roman', Times, serif; font-weight:bold; font-size:clamp(45px,11vw,90px); line-height:1.1; margin-top: 5px;
+    background:linear-gradient(90deg,#ffd27a,#ff8a3d,#ffb347); -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 0 18px rgba(255,140,50,.45)); animation:glow 3s ease-in-out infinite alternate; }
+  @keyframes glow { to { filter:drop-shadow(0 0 28px rgba(255,170,70,.85)); } }
+  
+  #openBtn { position:fixed; left:50%; bottom:max(4vh,env(safe-area-inset-bottom)); transform:translateX(-50%);
+    padding:14px 30px; border:0; border-radius:50px; font:bold 17px 'Times New Roman', Times, serif; letter-spacing:.05em; color:#fff; cursor:pointer;
+    background:linear-gradient(135deg,var(--rust),var(--crimson)); box-shadow:0 0 28px rgba(226,86,27,.65);
+    opacity:0; pointer-events:none; transition:opacity 1s; animation:pulse 1.8s infinite; }
+  #openBtn.show { opacity:1; pointer-events:auto; }
+  @keyframes pulse { 50% { transform:translateX(-50%) scale(1.07); } }
+  
+  #hint { position:fixed; left:0; right:0; bottom:calc(max(4vh,env(safe-area-inset-bottom)) + 64px); text-align:center; font:italic bold 17px 'Times New Roman', Times, serif; opacity:.75; pointer-events:none; }
 
-        /* --- INTRO SCREEN --- */
-        #intro-screen {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #030201;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 500;
-            transition: opacity 1s ease;
-        }
+  #start { position:fixed; inset:0; z-index:30; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px;
+    background:linear-gradient(180deg,#14070a,#5a1f0a 70%,#c2561a); transition:opacity .9s; text-align:center; padding:20px; }
+  #start.hide { opacity:0; pointer-events:none; }
+  #start .ico { font-size:64px; animation:float 2.2s ease-in-out infinite; }
+  @keyframes float { 50% { transform:translateY(-10px) rotate(8deg); } }
+  #start h2 { font-family:'Times New Roman', Times, serif; font-weight:bold; font-size:clamp(40px,10vw,60px); color:#ffd27a; }
+  #start p { font:italic bold 21px 'Times New Roman', Times, serif; opacity:.9; }
+  #start button { margin-top:6px; padding:14px 36px; border:0; border-radius:50px; font:bold 17px 'Times New Roman', Times, serif; letter-spacing:.05em; color:#fff; cursor:pointer;
+    background:linear-gradient(135deg,var(--rust),var(--crimson)); box-shadow:0 0 28px rgba(226,86,27,.65); }
 
-        .tap-btn {
-            background: transparent;
-            border: 2px solid #fb8500;
-            color: #fb8500;
-            font-family: 'Quicksand', sans-serif;
-            font-size: 1.5rem;
-            padding: 15px 40px;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 0 15px rgba(251, 133, 0, 0.4);
-            transition: all 0.3s ease;
-            animation: pulse-btn 2s infinite;
-        }
+  #overlay { position:fixed; inset:0; z-index:20; display:flex; align-items:center; justify-content:center; padding:20px;
+    background:rgba(20,6,4,.72); backdrop-filter:blur(6px); opacity:0; pointer-events:none; transition:opacity .5s; }
+  #overlay.show { opacity:1; pointer-events:auto; }
+  .card { position:relative; max-width:540px; width:100%; max-height:86vh; overflow:auto; padding:38px 28px 30px; border-radius:22px; text-align:center;
+    background:linear-gradient(160deg,rgba(255,200,130,.18),rgba(160,50,15,.18)); border:1px solid rgba(255,179,71,.5);
+    box-shadow:0 0 60px rgba(226,86,27,.4); transform:scale(.85); transition:transform .5s cubic-bezier(.2,1.4,.4,1); }
+  #overlay.show .card { transform:scale(1); }
+  .card h2 { font-family:'Times New Roman', Times, serif; font-weight:bold; font-size:40px; color:#ffd27a; margin-bottom:15px; }
+  #msg { font:bold clamp(20px,4.6vw,24px)/1.7 'Times New Roman', Times, serif; min-height:220px; }
+  #msg .cur { display:inline-block; width:2px; height:1em; background:var(--amber); margin-left:2px; vertical-align:-2px; animation:blink .8s infinite; }
+  @keyframes blink { 50% { opacity:0; } }
+  .close { position:absolute; top:10px; right:14px; background:none; border:0; color:#fff; font-size:28px; cursor:pointer; opacity:.7; font-weight:bold; }
 
-        .tap-btn:hover {
-            background: #fb8500;
-            color: #000;
-            box-shadow: 0 0 30px rgba(251, 133, 0, 0.8);
-        }
+  /* New Circular Thumbnail Music Player */
+  #music { position:fixed; right:max(15px,env(safe-area-inset-right)); bottom:max(15px,env(safe-area-inset-bottom)); z-index:10; 
+    display:flex; align-items:center; gap:12px; border-radius:50px; padding:6px 16px 6px 6px;
+    border:2px solid rgba(255,179,71,.5); background:rgba(20,6,4,.75); backdrop-filter:blur(8px);
+    box-shadow:0 0 20px rgba(226,86,27,.5); transition: transform 0.3s; }
+  #music:hover { transform: scale(1.05); }
+  #ytThumb { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #ffd27a; animation: spin 4s linear infinite; }
+  #music.paused #ytThumb { animation-play-state: paused; }
+  @keyframes spin { 100% { transform: rotate(360deg); } }
+  
+  .music-info { display:flex; flex-direction:column; justify-content:center; align-items:flex-start; }
+  .music-info span { font:bold 14px 'Times New Roman', Times, serif; color:var(--amber); letter-spacing: 1px; }
+  
+  #playBtn { background:none; border:0; color:#fff; font-size:20px; cursor:pointer; margin-top:2px; }
+  
+  /* Hidden iframe container so it plays in the background */
+  #yt-wrapper { position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; overflow:hidden; }
 
-        @keyframes pulse-btn {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        /* --- MAIN CONTENT (Hidden initially) --- */
-        #main-content {
-            display: none; /* Revealed by JS */
-            opacity: 0;
-            z-index: 10;
-            padding: 20px;
-            flex-direction: column;
-            align-items: center;
-            animation: fadeIn 2s forwards;
-        }
-
-        /* --- THE GLOWING TREE --- */
-        .tree-container {
-            width: 150px;
-            height: 150px;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 0 20px #fb8500);
-            animation: float 4s ease-in-out infinite;
-        }
-
-        .tree-container svg {
-            width: 100%;
-            height: 100%;
-            fill: none;
-            stroke: #ffb703;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        h1 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.5rem;
-            color: #ffb703;
-            margin: 0;
-        }
-
-        .name {
-            font-family: 'Dancing Script', cursive;
-            font-size: 5rem;
-            color: #fb8500;
-            margin: 5px 0 25px 0;
-            text-shadow: 0 0 15px #fb8500, 0 0 30px #fb8500;
-        }
-
-        .message {
-            font-size: 1.2rem;
-            color: #ffe8d6;
-            line-height: 1.8;
-            max-width: 650px;
-            margin: 0 auto;
-            text-shadow: 0 0 5px rgba(0,0,0,0.8);
-        }
-
-        /* Hidden Music Player */
-        #music-container {
-            display: none;
-        }
-
-        /* Pure CSS Falling Elements */
-        .particle {
-            position: absolute;
-            top: -50px;
-            opacity: 0.8;
-            animation: fall linear infinite;
-            z-index: 1;
-        }
-
-        @keyframes fall {
-            0% { transform: translateY(-50px) rotate(0deg) translateX(0); opacity: 1; }
-            100% { transform: translateY(105vh) rotate(360deg) translateX(50px); opacity: 0; }
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        @media (max-width: 600px) {
-            .tree-container { width: 120px; height: 120px; }
-            h1 { font-size: 2rem; }
-            .name { font-size: 3.5rem; }
-            .message { font-size: 1.05rem; padding: 0 10px; }
-        }
-    </style>
+  @media (max-width:520px) { 
+    .title h1 { font-size: 38px; }
+    #start h2 { font-size: 34px; }
+    #music { right:50%; transform:translateX(50%); bottom: 20px; }
+    #music:hover { transform: translateX(50%) scale(1.05); }
+  }
+</style>
 </head>
 <body>
 
-    <!-- 1. INTRO SCREEN (Clickable Interface) -->
-    <div id="intro-screen">
-        <button class="tap-btn" onclick="startExperience()">Tap to Open ✨</button>
-    </div>
+<canvas id="c"></canvas>
 
-    <!-- Falling particles background container -->
-    <div id="particles-container"></div>
+<div class="title">
+  <small>Happy Birthday</small>
+  <h1>Meri Pengu</h1>
+</div>
 
-    <!-- 2. MAIN CONTENT (Tree + Text) -->
-    <div id="main-content">
-        
-        <!-- The Glowing Tree SVG -->
-        <div class="tree-container">
-            <svg viewBox="0 0 24 24">
-                <path d="M12 2L9 7H11L7 14H10L5 22H19L14 14H17L13 7H15L12 2Z" fill="rgba(251, 133, 0, 0.2)" stroke="#fb8500"/>
-                <circle cx="12" cy="22" r="1" fill="#ffb703" stroke="none"/>
-            </svg>
-        </div>
+<div id="hint">tap the leaves on the tree 🍂</div>
+<button id="openBtn">Open my wish 💌</button>
 
-        <h1>Happy Birthday</h1>
-        
-        <div class="name">Meri Pengu</div>
-        
-        <div class="message">
-            You have meant the world for me. <br>
-            The way last year was didn't turn out to be best, <br>
-            but hope this year comes with strenght and lots of love, <br>
-            this october please pass slowy for my jaan!! <br>
-            Wishing you a day filled with love, laughter, and endless joy. <br>
-            You deserve all the happiness in the universe today! ❤️
-        </div>
-    </div>
+<div id="start">
+  <div class="ico">🍁</div>
+  <h2>For Meri Pengu</h2>
+  <p>A little something, made just for you</p>
+  <button id="startBtn">Tap to begin ✨</button>
+</div>
 
-    <!-- Hidden Music Player (Injected via JS for Autoplay) -->
-    <div id="music-container"></div>
+<div id="overlay">
+  <div class="card">
+    <button class="close" id="closeBtn" aria-label="Close">×</button>
+    <h2>Meri Pengu ❤️</h2>
+    <div id="msg"></div>
+  </div>
+</div>
 
-    <script>
-        function startExperience() {
-            // 1. Hide the intro button smoothly
-            const intro = document.getElementById('intro-screen');
-            intro.style.opacity = '0';
-            setTimeout(() => { intro.style.display = 'none'; }, 1000);
+<!-- Updated Background Music Player with Thumbnail -->
+<div id="music" class="paused">
+  <img id="ytThumb" src="" alt="Song Thumbnail" />
+  <div class="music-info">
+    <span>🎵 Our Song</span>
+    <button id="playBtn" title="Play / Pause">▶</button>
+  </div>
+  <div id="yt-wrapper"><div id="yt"></div></div>
+</div>
 
-            // 2. Show the main content (Tree and Text)
-            const mainContent = document.getElementById('main-content');
-            mainContent.style.display = 'flex';
+<script>
+/* ======== EDIT THESE ======== */
+const NAME     = "Meri Pengu";
+const VIDEO_ID = "UGr-YGCy050";
+const MESSAGE_LINES = [
+  "You have meant the world for me.",
+  "The way last year was didn't turn out to be best,",
+  "but hope this year comes with strenght and lots of love,",
+  "this october please pass slowy for my jaan!!",
+  "Wishing you a day filled with love, laughter, and endless joy.",
+  "You deserve all the happiness in the universe today! ❤️"
+];
+/* ============================ */
 
-            // 3. Inject YouTube Music (Background Autoplay bypass)
-            // UGr-YGCy050 will play automatically now that she clicked!
-            const musicBox = document.getElementById('music-container');
-            musicBox.innerHTML = `<iframe width="10" height="10" 
-                src="https://www.youtube.com/embed/UGr-YGCy050?autoplay=1&loop=1&playlist=UGr-YGCy050" 
-                frameborder="0" allow="autoplay" allowfullscreen></iframe>`;
+/* Load YouTube Thumbnail */
+document.getElementById('ytThumb').src = `https://img.youtube.com/vi/${VIDEO_ID}/mqdefault.jpg`;
 
-            // 4. Trigger Fireworks
-            confetti({
-                particleCount: 150,
-                spread: 100,
-                origin: { y: 0.5 },
-                colors: ['#fb8500', '#ffb703', '#8e1600', '#ffffff'],
-                zIndex: 1000
-            });
-
-            // 5. Start Falling Autumn Particles
-            const particlesContainer = document.getElementById('particles-container');
-            const colors = ['#fb8500', '#ffb703', '#8e1600', '#cc5500'];
-            
-            for (let i = 0; i < 40; i++) {
-                let particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                // Shape it like leaves/petals
-                particle.style.width = (Math.random() * 10 + 8) + 'px';
-                particle.style.height = (Math.random() * 10 + 12) + 'px';
-                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                particle.style.borderRadius = '0 50% 0 50%'; 
-                
-                // Random position and fall speed
-                particle.style.left = Math.random() * 100 + 'vw';
-                particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
-                particle.style.animationDelay = (Math.random() * 5) + 's';
-                
-                particlesContainer.appendChild(particle);
-            }
+/* ---------- YouTube music ---------- */
+let player, playerReady = false, wantPlay = false;
+const tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+document.head.appendChild(tag);
+window.onYouTubeIframeAPIReady = () => {
+  player = new YT.Player('yt', {
+    videoId: VIDEO_ID,
+    playerVars: { playsinline:1, controls:0, rel:0, modestbranding:1, loop:1, playlist:VIDEO_ID },
+    events: {
+      onReady: () => { playerReady = true; if (wantPlay) player.playVideo(); },
+      onStateChange: e => {
+        if (e.data === YT.PlayerState.ENDED) player.playVideo();
+        const musicContainer = document.getElementById('music');
+        const playBtn = document.getElementById('playBtn');
+        if (e.data === YT.PlayerState.PLAYING) {
+            musicContainer.classList.remove('paused');
+            playBtn.textContent = '⏸';
+        } else {
+            musicContainer.classList.add('paused');
+            playBtn.textContent = '▶';
         }
-    </script>
+      }
+    }
+  });
+};
+
+document.getElementById('playBtn').onclick = () => {
+  if (!playerReady) return;
+  player.getPlayerState() === YT.PlayerState.PLAYING ? player.pauseVideo() : player.playVideo();
+};
+
+/* ---------- Canvas tree ---------- */
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const FALL = ['#e2561b', '#f08a24', '#ffb347', '#c0392b', '#a4161a', '#d9a21b', '#ff7a30'];
+let W, H, DPR, branches = [], leaves = [], falling = [], stars = [], t0 = null, started = false;
+const MAXD = 9, STEP = 0.5;
+
+function rng(seed){ return () => (seed = (seed * 16807) % 2147483647) / 2147483647; }
+
+function build(){
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  W = innerWidth; H = innerHeight;
+  cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR,0,0,DPR,0,0);
+  const r = rng(42);
+  branches = []; leaves = [];
+  const trunk = Math.min(H, W * 1.5) * 0.17;
+  (function grow(x, y, len, ang, d, w){
+    const x2 = x + Math.cos(ang) * len, y2 = y + Math.sin(ang) * len;
+    branches.push({ x, y, x2, y2, d, w });
+    if (d >= MAXD - 3 && r() < 0.6) leaves.push({
+      x: x2, y: y2, s: 8 + r() * 8, rot: (r() - .5) * 2, delay: MAXD * STEP + r() * 3,
+      col: FALL[Math.floor(r() * FALL.length)], heart: r() < 0.14 });
+    if (d >= MAXD) return;
+    const n = d < 2 ? 2 : (r() < 0.25 ? 3 : 2);
+    for (let i = 0; i < n; i++) {
+      const spread = (i - (n - 1) / 2) * (0.55 + r() * 0.25) + (r() - 0.5) * 0.3;
+      grow(x2, y2, len * (0.76 + r() * 0.08), ang + spread, d + 1, w * 0.72);
+    }
+  })(W / 2, H * 0.9, trunk, -Math.PI / 2, 0, Math.max(6, W * 0.012));
+  stars = Array.from({ length: 50 }, () => ({ x: r() * W, y: r() * H * 0.5, s: r() * 1.3 + .3, p: r() * 6 }));
+}
+
+function heart(s){
+  ctx.beginPath();
+  ctx.moveTo(0, s * 0.35);
+  ctx.bezierCurveTo(-s, -s * 0.4, -s * 0.5, -s, 0, -s * 0.4);
+  ctx.bezierCurveTo(s * 0.5, -s, s, -s * 0.4, 0, s * 0.35);
+  ctx.closePath(); ctx.fill();
+}
+function leaf(s, col){
+  ctx.fillStyle = col;
+  ctx.beginPath();
+  ctx.moveTo(0, -s);
+  ctx.bezierCurveTo(s * .9, -s * .5, s * .8, s * .4, 0, s);
+  ctx.bezierCurveTo(-s * .8, s * .4, -s * .9, -s * .5, 0, -s);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(80,20,5,.55)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0, -s * .8); ctx.lineTo(0, s * 1.25); ctx.stroke();
+}
+function piece(x, y, s, rot, col, isHeart){
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot);
+  if (isHeart) { ctx.fillStyle = col; heart(s * 1.1); } else leaf(s, col);
+  ctx.restore();
+}
+const easeBack = p => { const c = 1.7; return 1 + (c + 1) * Math.pow(p - 1, 3) + c * Math.pow(p - 1, 2); };
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+
+function frame(ts){
+  if (!t0) t0 = ts;
+  const t = started ? (ts - t0) / 1000 : 0;
+  ctx.clearRect(0, 0, W, H);
+
+  for (const s of stars) {
+    ctx.globalAlpha = 0.25 + 0.6 * Math.abs(Math.sin(ts / 900 + s.p));
+    ctx.fillStyle = '#ffe9c4'; ctx.fillRect(s.x, s.y, s.s, s.s);
+  }
+  ctx.globalAlpha = 1;
+
+  const mx = W * 0.82, my = H * 0.3, mr = Math.min(W, H) * 0.07;
+  const mg = ctx.createRadialGradient(mx, my, mr * .4, mx, my, mr * 3);
+  mg.addColorStop(0, 'rgba(255,200,110,.45)'); mg.addColorStop(1, 'rgba(255,200,110,0)');
+  ctx.fillStyle = mg; ctx.fillRect(mx - mr * 3, my - mr * 3, mr * 6, mr * 6);
+  ctx.fillStyle = '#ffd98a'; ctx.beginPath(); ctx.arc(mx, my, mr, 0, 7); ctx.fill();
+
+  ctx.fillStyle = '#2a0e06';
+  ctx.beginPath(); ctx.ellipse(W / 2, H * 0.905, W * 0.45, H * 0.035, 0, 0, 7); ctx.fill();
+
+  ctx.lineCap = 'round';
+  for (const b of branches) {
+    const p = clamp((t - b.d * STEP) / STEP);
+    if (p <= 0) continue;
+    ctx.strokeStyle = b.d > 5 ? '#6e4326' : '#46261a';
+    ctx.lineWidth = Math.max(1, b.w);
+    ctx.beginPath(); ctx.moveTo(b.x, b.y);
+    ctx.lineTo(b.x + (b.x2 - b.x) * p, b.y + (b.y2 - b.y) * p); ctx.stroke();
+  }
+
+  for (const l of leaves) {
+    const p = clamp((t - l.delay) / 0.8);
+    if (p <= 0) continue;
+    const sway = Math.sin(ts / 800 + l.x) * 0.15;
+    const s = l.s * easeBack(p) * (1 + 0.05 * Math.sin(ts / 450 + l.y));
+    ctx.shadowColor = l.col; ctx.shadowBlur = 8;
+    piece(l.x, l.y, s, l.rot + sway, l.heart ? '#ff4d6d' : l.col, l.heart);
+    ctx.shadowBlur = 0;
+    l.live = p >= 1;
+    if (l.live && Math.random() < 0.0012) falling.push({ x: l.x, y: l.y, vx: (Math.random() - .5) * .5, vy: .35 + Math.random() * .5, r: 4 + Math.random() * 4, a: Math.random() * 6, col: l.col, heart: l.heart });
+  }
+
+  for (let i = falling.length - 1; i >= 0; i--) {
+    const q = falling[i];
+    q.x += q.vx + Math.sin(ts / 500 + q.a) * .6; q.y += q.vy; q.a += .035;
+    if (q.y > H * 0.93) { falling.splice(i, 1); continue; }
+    piece(q.x, q.y, q.r, q.a, q.col, q.heart);
+  }
+  requestAnimationFrame(frame);
+}
+
+function burst(x, y){
+  for (let i = 0; i < 14; i++) {
+    const a = Math.random() * (Math.PI * 2), v = 1 + Math.random() * 2.5;
+    falling.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1.2, r: 5 + Math.random() * 6, a: Math.random() * 6,
+      col: i % 5 === 0 ? '#ff4d6d' : FALL[i % FALL.length], heart: i % 5 === 0 });
+  }
+}
+
+cv.addEventListener('pointerdown', e => {
+  if (!started) return;
+  burst(e.clientX, e.clientY);
+  for (const l of leaves) {
+    if (l.live && Math.hypot(e.clientX - l.x, e.clientY - l.y) < l.s + 12) { openCard(); break; }
+  }
+});
+
+/* ---------- Message card ---------- */
+const overlay = document.getElementById('overlay'), msg = document.getElementById('msg');
+let typing = 0;
+function openCard(){
+  overlay.classList.add('show');
+  const id = ++typing; msg.innerHTML = '';
+  let li = 0, ci = 0, out = '';
+  (function tick(){
+    if (id !== typing) return;
+    if (li >= MESSAGE_LINES.length) { msg.innerHTML = out; return; }
+    const line = MESSAGE_LINES[li];
+    ci++;
+    msg.innerHTML = out + line.slice(0, ci) + '<span class="cur"></span>';
+    if (ci >= line.length) { out += line + '<br>'; li++; ci = 0; setTimeout(tick, 450); }
+    else setTimeout(tick, 38);
+  })();
+}
+function closeCard(){ overlay.classList.remove('show'); typing++; }
+document.getElementById('closeBtn').onclick = closeCard;
+overlay.addEventListener('pointerdown', e => { if (e.target === overlay) closeCard(); });
+document.getElementById('openBtn').onclick = openCard;
+
+/* ---------- Start ---------- */
+document.getElementById('startBtn').onclick = () => {
+  document.getElementById('start').classList.add('hide');
+  started = true; t0 = null;
+  wantPlay = true; if (playerReady) player.playVideo();
+  setTimeout(() => document.getElementById('openBtn').classList.add('show'), (MAXD * STEP + 3) * 1000);
+};
+
+addEventListener('resize', build);
+build(); requestAnimationFrame(frame);
+</script>
 </body>
 </html>
