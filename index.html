@@ -4,40 +4,35 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Happy Birthday Meri Pengu 🍁</title>
+<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,500&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
 <style>
   :root { --amber:#ffb347; --rust:#e2561b; --crimson:#a4161a; --cream:#fff1dc; }
   * { box-sizing:border-box; margin:0; padding:0; }
-  
-  /* Applied Bold Times New Roman Globally */
-  html,body { height:100%; overflow:hidden; font-family:'Times New Roman', Times, serif; font-weight:bold; color:var(--cream);
+  html,body { height:100%; overflow:hidden; font-family:'Montserrat',sans-serif; color:var(--cream);
     background:linear-gradient(180deg,#14070a 0%,#3a1208 45%,#8a2f0e 80%,#d9731f 100%); }
-  
   canvas#c { position:fixed; inset:0; width:100%; height:100%; cursor:pointer; }
-  
   .title { position:fixed; top:max(4vh,env(safe-area-inset-top)); left:0; right:0; text-align:center; pointer-events:none; }
-  .title small { display:block; letter-spacing:.3em; font-size:clamp(12px,2.6vw,15px); opacity:.85; text-transform:uppercase; color:var(--amber); }
-  .title h1 { font-family:'Times New Roman', Times, serif; font-weight:bold; font-size:clamp(45px,11vw,90px); line-height:1.1; margin-top: 5px;
+  .title small { display:block; letter-spacing:.5em; font-size:clamp(10px,2.4vw,13px); opacity:.85; text-transform:uppercase; font-weight:300; color:var(--amber); }
+  .title h1 { font-family:'Pinyon Script',cursive; font-weight:400; font-size:clamp(54px,13vw,104px); line-height:1.1;
     background:linear-gradient(90deg,#ffd27a,#ff8a3d,#ffb347); -webkit-background-clip:text; background-clip:text; color:transparent;
     filter:drop-shadow(0 0 18px rgba(255,140,50,.45)); animation:glow 3s ease-in-out infinite alternate; }
   @keyframes glow { to { filter:drop-shadow(0 0 28px rgba(255,170,70,.85)); } }
-  
   #openBtn { position:fixed; left:50%; bottom:max(4vh,env(safe-area-inset-bottom)); transform:translateX(-50%);
-    padding:14px 30px; border:0; border-radius:50px; font:bold 17px 'Times New Roman', Times, serif; letter-spacing:.05em; color:#fff; cursor:pointer;
+    padding:14px 30px; border:0; border-radius:50px; font:400 15px 'Montserrat',sans-serif; letter-spacing:.08em; color:#fff; cursor:pointer;
     background:linear-gradient(135deg,var(--rust),var(--crimson)); box-shadow:0 0 28px rgba(226,86,27,.65);
     opacity:0; pointer-events:none; transition:opacity 1s; animation:pulse 1.8s infinite; }
   #openBtn.show { opacity:1; pointer-events:auto; }
   @keyframes pulse { 50% { transform:translateX(-50%) scale(1.07); } }
-  
-  #hint { position:fixed; left:0; right:0; bottom:calc(max(4vh,env(safe-area-inset-bottom)) + 64px); text-align:center; font:italic bold 17px 'Times New Roman', Times, serif; opacity:.75; pointer-events:none; }
+  #hint { position:fixed; left:0; right:0; bottom:calc(max(4vh,env(safe-area-inset-bottom)) + 64px); text-align:center; font:italic 400 15px 'Cormorant Garamond',serif; opacity:.75; pointer-events:none; }
 
   #start { position:fixed; inset:0; z-index:30; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px;
     background:linear-gradient(180deg,#14070a,#5a1f0a 70%,#c2561a); transition:opacity .9s; text-align:center; padding:20px; }
   #start.hide { opacity:0; pointer-events:none; }
   #start .ico { font-size:64px; animation:float 2.2s ease-in-out infinite; }
   @keyframes float { 50% { transform:translateY(-10px) rotate(8deg); } }
-  #start h2 { font-family:'Times New Roman', Times, serif; font-weight:bold; font-size:clamp(40px,10vw,60px); color:#ffd27a; }
-  #start p { font:italic bold 21px 'Times New Roman', Times, serif; opacity:.9; }
-  #start button { margin-top:6px; padding:14px 36px; border:0; border-radius:50px; font:bold 17px 'Times New Roman', Times, serif; letter-spacing:.05em; color:#fff; cursor:pointer;
+  #start h2 { font-family:'Pinyon Script',cursive; font-weight:400; font-size:clamp(46px,12vw,64px); color:#ffd27a; }
+  #start p { font:italic 400 19px 'Cormorant Garamond',serif; opacity:.9; }
+  #start button { margin-top:6px; padding:14px 36px; border:0; border-radius:50px; font:400 15px 'Montserrat',sans-serif; letter-spacing:.1em; color:#fff; cursor:pointer;
     background:linear-gradient(135deg,var(--rust),var(--crimson)); box-shadow:0 0 28px rgba(226,86,27,.65); }
 
   #overlay { position:fixed; inset:0; z-index:20; display:flex; align-items:center; justify-content:center; padding:20px;
@@ -47,36 +42,20 @@
     background:linear-gradient(160deg,rgba(255,200,130,.18),rgba(160,50,15,.18)); border:1px solid rgba(255,179,71,.5);
     box-shadow:0 0 60px rgba(226,86,27,.4); transform:scale(.85); transition:transform .5s cubic-bezier(.2,1.4,.4,1); }
   #overlay.show .card { transform:scale(1); }
-  .card h2 { font-family:'Times New Roman', Times, serif; font-weight:bold; font-size:40px; color:#ffd27a; margin-bottom:15px; }
-  #msg { font:bold clamp(20px,4.6vw,24px)/1.7 'Times New Roman', Times, serif; min-height:220px; }
+  .card h2 { font-family:'Pinyon Script',cursive; font-weight:400; font-size:46px; color:#ffd27a; margin-bottom:12px; }
+  #msg { font:italic 500 clamp(19px,4.6vw,23px)/1.7 'Cormorant Garamond',serif; min-height:220px; }
   #msg .cur { display:inline-block; width:2px; height:1em; background:var(--amber); margin-left:2px; vertical-align:-2px; animation:blink .8s infinite; }
   @keyframes blink { 50% { opacity:0; } }
-  .close { position:absolute; top:10px; right:14px; background:none; border:0; color:#fff; font-size:28px; cursor:pointer; opacity:.7; font-weight:bold; }
+  .close { position:absolute; top:10px; right:14px; background:none; border:0; color:#fff; font-size:28px; cursor:pointer; opacity:.7; }
 
-  /* New Circular Thumbnail Music Player */
-  #music { position:fixed; right:max(15px,env(safe-area-inset-right)); bottom:max(15px,env(safe-area-inset-bottom)); z-index:10; 
-    display:flex; align-items:center; gap:12px; border-radius:50px; padding:6px 16px 6px 6px;
-    border:2px solid rgba(255,179,71,.5); background:rgba(20,6,4,.75); backdrop-filter:blur(8px);
-    box-shadow:0 0 20px rgba(226,86,27,.5); transition: transform 0.3s; }
-  #music:hover { transform: scale(1.05); }
-  #ytThumb { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #ffd27a; animation: spin 4s linear infinite; }
-  #music.paused #ytThumb { animation-play-state: paused; }
-  @keyframes spin { 100% { transform: rotate(360deg); } }
-  
-  .music-info { display:flex; flex-direction:column; justify-content:center; align-items:flex-start; }
-  .music-info span { font:bold 14px 'Times New Roman', Times, serif; color:var(--amber); letter-spacing: 1px; }
-  
-  #playBtn { background:none; border:0; color:#fff; font-size:20px; cursor:pointer; margin-top:2px; }
-  
-  /* Hidden iframe container so it plays in the background */
-  #yt-wrapper { position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; overflow:hidden; }
-
-  @media (max-width:520px) { 
-    .title h1 { font-size: 38px; }
-    #start h2 { font-size: 34px; }
-    #music { right:50%; transform:translateX(50%); bottom: 20px; }
-    #music:hover { transform: translateX(50%) scale(1.05); }
-  }
+  #music { position:fixed; right:max(10px,env(safe-area-inset-right)); bottom:max(10px,env(safe-area-inset-bottom)); z-index:10; width:170px;
+    border-radius:14px; overflow:hidden; border:1px solid rgba(255,179,71,.45); background:rgba(20,6,4,.55); backdrop-filter:blur(6px);
+    box-shadow:0 0 18px rgba(226,86,27,.4); }
+  #music .bar { display:flex; align-items:center; justify-content:space-between; padding:5px 8px; font:italic 400 14px 'Cormorant Garamond',serif; }
+  #music button { background:none; border:0; color:#fff; font-size:16px; cursor:pointer; }
+  #yt { width:170px; height:96px; display:block; }
+  #music.mini #yt { display:none; }
+  @media (max-width:520px) { #music { width:130px; } #yt { width:130px; height:74px; } }
 </style>
 </head>
 <body>
@@ -106,14 +85,9 @@
   </div>
 </div>
 
-<!-- Updated Background Music Player with Thumbnail -->
-<div id="music" class="paused">
-  <img id="ytThumb" src="" alt="Song Thumbnail" />
-  <div class="music-info">
-    <span>🎵 Our Song</span>
-    <button id="playBtn" title="Play / Pause">▶</button>
-  </div>
-  <div id="yt-wrapper"><div id="yt"></div></div>
+<div id="music">
+  <div class="bar"><span>♪ Our song</span><span><button id="playBtn" title="Play / Pause">⏸</button><button id="minBtn" title="Hide video">▾</button></span></div>
+  <div id="yt"></div>
 </div>
 
 <script>
@@ -130,9 +104,6 @@ const MESSAGE_LINES = [
 ];
 /* ============================ */
 
-/* Load YouTube Thumbnail */
-document.getElementById('ytThumb').src = `https://img.youtube.com/vi/${VIDEO_ID}/mqdefault.jpg`;
-
 /* ---------- YouTube music ---------- */
 let player, playerReady = false, wantPlay = false;
 const tag = document.createElement('script');
@@ -146,23 +117,18 @@ window.onYouTubeIframeAPIReady = () => {
       onReady: () => { playerReady = true; if (wantPlay) player.playVideo(); },
       onStateChange: e => {
         if (e.data === YT.PlayerState.ENDED) player.playVideo();
-        const musicContainer = document.getElementById('music');
-        const playBtn = document.getElementById('playBtn');
-        if (e.data === YT.PlayerState.PLAYING) {
-            musicContainer.classList.remove('paused');
-            playBtn.textContent = '⏸';
-        } else {
-            musicContainer.classList.add('paused');
-            playBtn.textContent = '▶';
-        }
+        document.getElementById('playBtn').textContent = e.data === YT.PlayerState.PLAYING ? '⏸' : '▶';
       }
     }
   });
 };
-
 document.getElementById('playBtn').onclick = () => {
   if (!playerReady) return;
   player.getPlayerState() === YT.PlayerState.PLAYING ? player.pauseVideo() : player.playVideo();
+};
+document.getElementById('minBtn').onclick = e => {
+  const m = document.getElementById('music'); m.classList.toggle('mini');
+  e.target.textContent = m.classList.contains('mini') ? '▴' : '▾';
 };
 
 /* ---------- Canvas tree ---------- */
@@ -203,6 +169,7 @@ function heart(s){
   ctx.bezierCurveTo(s * 0.5, -s, s, -s * 0.4, 0, s * 0.35);
   ctx.closePath(); ctx.fill();
 }
+/* maple-ish leaf: pointed oval with a stem and a vein */
 function leaf(s, col){
   ctx.fillStyle = col;
   ctx.beginPath();
@@ -232,15 +199,18 @@ function frame(ts){
   }
   ctx.globalAlpha = 1;
 
+  // harvest moon
   const mx = W * 0.82, my = H * 0.3, mr = Math.min(W, H) * 0.07;
   const mg = ctx.createRadialGradient(mx, my, mr * .4, mx, my, mr * 3);
   mg.addColorStop(0, 'rgba(255,200,110,.45)'); mg.addColorStop(1, 'rgba(255,200,110,0)');
   ctx.fillStyle = mg; ctx.fillRect(mx - mr * 3, my - mr * 3, mr * 6, mr * 6);
   ctx.fillStyle = '#ffd98a'; ctx.beginPath(); ctx.arc(mx, my, mr, 0, 7); ctx.fill();
 
+  // ground
   ctx.fillStyle = '#2a0e06';
   ctx.beginPath(); ctx.ellipse(W / 2, H * 0.905, W * 0.45, H * 0.035, 0, 0, 7); ctx.fill();
 
+  // branches
   ctx.lineCap = 'round';
   for (const b of branches) {
     const p = clamp((t - b.d * STEP) / STEP);
@@ -251,6 +221,7 @@ function frame(ts){
     ctx.lineTo(b.x + (b.x2 - b.x) * p, b.y + (b.y2 - b.y) * p); ctx.stroke();
   }
 
+  // leaves
   for (const l of leaves) {
     const p = clamp((t - l.delay) / 0.8);
     if (p <= 0) continue;
@@ -263,6 +234,7 @@ function frame(ts){
     if (l.live && Math.random() < 0.0012) falling.push({ x: l.x, y: l.y, vx: (Math.random() - .5) * .5, vy: .35 + Math.random() * .5, r: 4 + Math.random() * 4, a: Math.random() * 6, col: l.col, heart: l.heart });
   }
 
+  // falling leaves
   for (let i = falling.length - 1; i >= 0; i--) {
     const q = falling[i];
     q.x += q.vx + Math.sin(ts / 500 + q.a) * .6; q.y += q.vy; q.a += .035;
@@ -274,7 +246,7 @@ function frame(ts){
 
 function burst(x, y){
   for (let i = 0; i < 14; i++) {
-    const a = Math.random() * (Math.PI * 2), v = 1 + Math.random() * 2.5;
+    const a = Math.random() * Math.PI * 2, v = 1 + Math.random() * 2.5;
     falling.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1.2, r: 5 + Math.random() * 6, a: Math.random() * 6,
       col: i % 5 === 0 ? '#ff4d6d' : FALL[i % FALL.length], heart: i % 5 === 0 });
   }
