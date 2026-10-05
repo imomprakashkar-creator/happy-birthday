@@ -5,20 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday!</title>
     
-    <!-- 1. Beautiful Handwritten Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <!-- Glowing Cursive and Clean Fonts (Matches the video style) -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
     
-    <!-- 2. Interactive Fireworks Library -->
+    <!-- Fireworks Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <style>
         body {
             margin: 0;
             padding: 0;
-            /* October Fall Aesthetic: Warm, dark autumn gradient */
-            background: radial-gradient(circle at center, #2e1503, #0a0502);
-            color: #fcebd5;
-            font-family: 'Caveat', cursive; /* Handwritten font */
+            background-color: #050301; /* Very dark background to make the glow pop */
+            color: #fff;
+            font-family: 'Quicksand', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -26,60 +25,71 @@
             min-height: 100vh;
             overflow: hidden;
             text-align: center;
-            cursor: pointer; /* Makes the cursor a pointer to suggest clicking */
+            cursor: pointer;
         }
-        
+
         .container {
             z-index: 10;
-            animation: fadeIn 2s ease-in;
             padding: 20px;
-            pointer-events: none; /* Lets clicks pass through to trigger fireworks */
+            pointer-events: none; /* Let clicks pass through for fireworks */
+            animation: fadeIn 3s ease-in;
         }
 
         h1 {
-            font-size: 3rem;
-            color: #e68a49;
-            margin-bottom: 5px;
             font-family: 'Dancing Script', cursive;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            font-size: 3rem;
+            color: #ffb703; /* Autumn gold */
+            margin: 0;
+            text-shadow: 0 0 10px rgba(255, 183, 3, 0.5);
         }
 
         .name {
-            color: #ffd166;
-            font-size: 5.5rem;
             font-family: 'Dancing Script', cursive;
-            text-shadow: 0 0 20px rgba(255, 209, 102, 0.4);
-            margin-bottom: 20px;
+            font-size: 5.5rem;
+            color: #fb8500; /* Glowing autumn orange */
+            margin: 0 0 30px 0;
+            text-shadow: 0 0 15px #fb8500, 0 0 30px #fb8500;
         }
 
         .message {
-            font-size: 2.2rem;
-            color: #f4d3b6;
+            font-size: 1.3rem;
+            color: #ffe8d6;
+            line-height: 1.8;
             max-width: 650px;
-            line-height: 1.4;
             margin: 0 auto;
-            background: rgba(0, 0, 0, 0.25);
-            padding: 25px;
-            border-radius: 15px;
-            border: 1px dashed #e68a49;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-shadow: 0 0 5px rgba(0,0,0,0.8);
         }
 
-        /* Fixed Corner Music Player */
+        /* Pure CSS Autumn Leaves Animation */
+        .leaf {
+            position: absolute;
+            top: -50px;
+            opacity: 0.8;
+            animation: fall linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-50px) rotate(0deg) translateX(0); opacity: 1; }
+            100% { transform: translateY(105vh) rotate(360deg) translateX(50px); opacity: 0; }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(15px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Corner Music Player */
         .corner-player {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 25px;
+            right: 25px;
             z-index: 100;
-            background: #1a0f0a;
-            padding: 12px;
-            border-radius: 15px;
-            border: 2px solid #e68a49;
-            box-shadow: 0 0 20px rgba(230, 138, 73, 0.3);
-            pointer-events: auto; /* Ensures they can click play/pause */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            border-radius: 12px;
+            border: 1px solid #fb8500;
+            pointer-events: auto; /* Allow interacting with player */
             transition: transform 0.3s ease;
         }
 
@@ -87,150 +97,120 @@
             transform: scale(1.05);
         }
 
-        .corner-player p {
-            margin: 0 0 8px 0;
-            font-size: 1.4rem;
-            color: #e68a49;
-            font-family: 'Caveat', cursive;
-        }
-
-        /* Fall Leaves Animation */
-        .leaf {
-            position: absolute;
-            top: -50px;
-            width: 15px;
-            height: 15px;
-            background-color: #d95d39;
-            border-radius: 0 100%; /* Leaf shape */
-            opacity: 0.7;
-            animation: fall linear infinite;
-            z-index: 1;
-        }
-        .leaf:nth-child(even) {
-            background-color: #f2a65a; /* Alternate leaf color */
-            border-radius: 100% 0;
-        }
-
-        @keyframes fall {
-            0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: scale(0.95); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        /* Bouncing click instruction text */
+        /* Instruction Text */
         .instruction {
             position: fixed;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 1.8rem;
-            color: #f2a65a;
-            animation: pulse 1.5s infinite;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.5);
+            animation: blink 2s infinite;
             pointer-events: none;
-            z-index: 10;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
-            50% { opacity: 1; transform: translateX(-50%) translateY(-10px); }
+        @keyframes blink {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.8; }
         }
-        
-        /* Hide instruction on very small screens so it doesn't overlap the music player */
+
+        /* Mobile Phone Adjustments */
         @media (max-width: 600px) {
-            .instruction {
-                bottom: 120px; 
+            h1 { font-size: 2.5rem; }
+            .name { font-size: 4rem; }
+            .message { font-size: 1.1rem; padding: 0 15px; }
+            .corner-player { 
+                bottom: 80px; 
+                right: 50%; 
+                transform: translateX(50%); 
             }
         }
     </style>
 </head>
 <body>
     
-    <!-- Container for the falling autumn leaves -->
+    <!-- Leaves background container -->
     <div id="leaves-container"></div>
 
     <div class="container">
-        <h1>Happy Birthday,</h1>
+        <h1>Happy Birthday</h1>
         
-        <!-- The Name -->
         <div class="name">meri pengu</div>
         
-        <!-- The Note -->
         <div class="message">
-            <p>
-                 You have meant the world for me. <br>
-                The way last year was didn't turn out to be best, <br>
-                but hope this year comes with strenght and lots of love, <br>
-                this october please pass slowy for my jaan!! <br>
-                Wishing you a day filled with love, laughter, and endless joy. <br>
-                You deserve all the happiness in the universe today! ❤️
-            </p>
+            You have meant the world for me. <br>
+            The way last year was didn't turn out to be best, <br>
+            but hope this year comes with strenght and lots of love, <br>
+            this october please pass slowy for my jaan!! <br>
+            Wishing you a day filled with love, laughter, and endless joy. <br>
+            You deserve all the happiness in the universe today! ❤️
         </div>
     </div>
 
-    <!-- Interactive text prompt -->
-    <div class="instruction">✨ Click anywhere for a surprise! ✨</div>
+    <!-- Click Instruction -->
+    <div class="instruction">✨ Tap anywhere for a surprise ✨</div>
 
-    <!-- CORNER MUSIC PLAYER -->
+    <!-- Corner Player with requested Song ID (UGr-YGCy050) -->
     <div class="corner-player">
-        <p>🎵 Play our song</p>
-        <!-- The video ID UdLKbUi6Lt8 from your link is already embedded here -->
-        <iframe width="220" height="80" 
-            src="https://www.youtube.com/embed/UdLKbUi6Lt8?controls=1" 
-            title="YouTube video player" frameborder="0" 
+        <iframe width="220" height="60" 
+            src="https://www.youtube.com/embed/UGr-YGCy050?controls=1" 
+            title="YouTube music player" frameborder="0" 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
             allowfullscreen>
         </iframe>
     </div>
 
     <script>
-        // --- 1. FIREWORKS (CONFETTI) ON CLICK ---
+        // --- 1. FIREWORKS ON CLICK ---
         document.body.addEventListener('click', function(e) {
-            // Prevent fireworks from triggering if she clicks the music player box
+            // Prevent fireworks if clicking on the music player
             if(e.target.closest('.corner-player')) return;
 
-            // Calculate where she clicked so the fireworks explode exactly from her mouse/finger
             const x = e.clientX / window.innerWidth;
             const y = e.clientY / window.innerHeight;
 
-            // Fire the sparkles with Fall colors!
             confetti({
-                particleCount: 70,
-                spread: 80,
+                particleCount: 100,
+                spread: 100,
                 origin: { x: x, y: y },
-                colors: ['#e68a49', '#ffd166', '#d95d39', '#8c2f1b', '#ffffff'],
+                // Autumn colored fireworks
+                colors: ['#fb8500', '#ffb703', '#8e1600', '#ffffff'],
                 zIndex: 1000
             });
         });
 
-        // Trigger one big fireworks display automatically after 1 second when the page loads
+        // Trigger an initial burst of fireworks automatically when the page loads
         setTimeout(() => {
             confetti({ 
                 particleCount: 150, 
                 spread: 120, 
                 origin: { y: 0.6 }, 
-                colors: ['#e68a49', '#ffd166', '#d95d39'] 
+                colors: ['#fb8500', '#ffb703', '#8e1600'] 
             });
         }, 1000);
 
         // --- 2. FALLING AUTUMN LEAVES ---
         const leavesContainer = document.getElementById('leaves-container');
+        const leafColors = ['#fb8500', '#ffb703', '#8e1600', '#cc5500'];
+        
         for (let i = 0; i < 40; i++) {
             let leaf = document.createElement('div');
             leaf.classList.add('leaf');
-            // Randomize starting positions and speeds
+            
+            // Generate a natural leaf shape using CSS border-radius
+            leaf.style.width = (Math.random() * 12 + 8) + 'px';
+            leaf.style.height = (Math.random() * 12 + 12) + 'px';
+            leaf.style.backgroundColor = leafColors[Math.floor(Math.random() * leafColors.length)];
+            leaf.style.borderRadius = '0 50% 0 50%'; 
+            
+            // Randomize starting position and fall speed
             leaf.style.left = Math.random() * 100 + 'vw';
-            leaf.style.animationDuration = (Math.random() * 6 + 6) + 's'; // Fall speed
-            leaf.style.animationDelay = Math.random() * 5 + 's'; // Delay before falling
-            // Randomize leaf size
-            let size = (Math.random() * 12 + 10) + 'px';
-            leaf.style.width = size;
-            leaf.style.height = size;
+            leaf.style.animationDuration = (Math.random() * 4 + 6) + 's';
+            leaf.style.animationDelay = (Math.random() * 5) + 's';
+            
             leavesContainer.appendChild(leaf);
         }
     </script>
 </body>
+</html>
 </html>
